@@ -1,0 +1,26 @@
+include /_mixins
+
+doctype html
+html
+  head
+    title Bookr
+    link(href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet")
+    +stylesheets("reset")
+    +stylesheets("style")
+    +javascripts("/vendor/all")
+    +javascripts("handlebars/templates")
+  body
+    header
+      nav
+    main
+      div#modal
+      div#content
+    footer
+    block content
+  +javascripts("application")
+  +javascripts("models/book")
+  +javascripts("collections/books")
+  +javascripts("views/new", "views/index", "views/book", "views/menu", "views/edit_modal")
+  +javascripts("routers/router")
+  script(type="text/javascript").
+    app.init()

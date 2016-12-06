@@ -1,0 +1,21 @@
+<div id="edit-modal">
+  <h1>Edit Book</h1>
+  <img class="close" src="/images/close.svg" alt="close icon">
+  <form action="/books/{{id}}" method="put">
+    <fieldset id="main-form">
+      <input type="hidden" name="id" value="{{id}}">
+      <label for="title">Title</label>
+      <input type="text" name="title" id="title" value="{{title}}">
+      <label for="author">Author</label>
+      <input type="text" name="author" id="author" value="{{author}}">
+      <label for="isbn">ISBN</label>
+      <input type="number" name="isbn" id="isbn" value="{{isbn}}">
+      <label for="description">Description</label>
+      <textarea name="description" id="description">{{description}}</textarea>
+    </fieldset>
+    <fieldset id="action-form">
+      <input type="submit" value="Update book" class="update">
+    </fieldset>
+  </form>
+</div>
+<div id="overlay"></div>

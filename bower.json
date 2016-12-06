@@ -1,0 +1,23 @@
+{
+  "name": "bookr",
+  "description": "A book journaling app",
+  "main": "app.js",
+  "authors": [
+    "Konstantin Minevskiy"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/kminevskiy/launchschool_js",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "backbone": "^1.3.3",
+    "jquery": "1",
+    "handlebars": "^4.0.5"
+  }
+}

@@ -1,0 +1,20 @@
+var IndexView = Backbone.View.extend({
+  tagName: "ul",
+
+  attributes: {
+    id: "index"
+  },
+
+  render: function () {
+    this.collection.each(function (model) {
+      var bookView = new BookView({ model: model });
+      this.$el.append(bookView.render().el)
+    }, this);
+
+    $("#content").html(this.$el);
+  },
+
+  initialize: function () {
+    this.render();
+  }
+});
