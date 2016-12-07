@@ -4,8 +4,6 @@ bower_components
 # Books database
 db/books.db
 
-.gitignore
-
 # Logs
 logs
 *.log
