@@ -71,4 +71,14 @@ module.exports = function (router) {
     res.status(200).end();
   });
 
+  router.post("/check_isbn", function (req, res) {
+    var isbn = req.body.input;
+
+    db.get("SELECT title, isbn FROM books WHERE isbn = $isbn", {
+      $isbn: isbn
+    }, function (err, row) {
+      res.json( row ? {book: row} : {recordExists: false});
+    });
+  });
+
   }

@@ -3,7 +3,7 @@
 $h1_size: 28px;
 $main_font_color: #424242;
 $bg: #FCFCFC;
-$positive_button_color: #1F9CF5;
+$positive_button_color: #1A9623;
 $negative_button_color: #C42927;
 
 * {
@@ -18,7 +18,7 @@ body {
 
 h1 {
   font-size: $h1_size;
-  margin: 0 0 50px 0;
+  margin: 30px 0 50px 0;
 }
 
 input[type="submit"],
@@ -138,7 +138,7 @@ main {
       margin: 0 15px 0 0;
     }
 
-    .description {
+    .description-container {
       margin: 0 0 15px 0;
       line-height: 150%;
       text-align: justify;
@@ -284,4 +284,9 @@ Edit book modal styling
   bottom: 0;
   left: 0;
   z-index: 1;
+}
+
+#error-message div {
+  border: 2px solid $negative_button_color;
+  margin: 5px 0;
 }

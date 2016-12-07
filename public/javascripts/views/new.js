@@ -18,7 +18,27 @@ var NewBookView = Backbone.View.extend({
 
   events: {
     submit: "submitBook",
+    "blur #isbn": "isbnExists",
     "click input[type='button']": "resetForm"
+  },
+
+  isbnExists: function (e) {
+    var fieldValue = $(e.currentTarget).val();
+    var self = this;
+
+    $.ajax({
+      url: "/check_isbn",
+      method: "post",
+      data: {input: fieldValue},
+      success: function (data) {
+        if (data.book) {
+          self.errorMessage = new ErrorMessageView(data.book);
+          self.errorMessage.render();
+        } else {
+          self.errorMessage ? self.errorMessage.remove() : 0;
+        }
+      }
+    });
   },
 
   resetForm: function () {
@@ -29,12 +49,14 @@ var NewBookView = Backbone.View.extend({
     e.preventDefault();
     var $form = this.$("form");
 
-    $.ajax({
-      url: $form.attr("action"),
-      method: $form.attr("method"),
-      data: $form.serialize()
-    });
-    $form[0].reset();
-    app.trigger("goHome");
+    if (!this.errorMessage) {
+      $.ajax({
+        url: $form.attr("action"),
+        method: $form.attr("method"),
+        data: $form.serialize()
+      });
+      app.trigger("goHome");
+      this.remove();
+    }
   }
 });
