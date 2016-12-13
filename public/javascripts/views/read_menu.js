@@ -1,9 +1,9 @@
-var menu = Handlebars.templates.menu;
+var readMenu = Handlebars.templates.read_menu;
 
-var DefaultMenuView = Backbone.View.extend({
+var ToReadMenuView = Backbone.View.extend({
   tagName: "ul",
 
-  template: menu,
+  template: readMenu,
 
   render: function () {
     this.$el.html(this.template());

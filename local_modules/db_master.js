@@ -3,46 +3,113 @@ var path = require("path");
 var sqlite3 = require("sqlite3").verbose();
 
 var dbFile = path.resolve(path.dirname(__dirname), "db/books.db");
-var exists = fs.existsSync(dbFile);
 var db = new sqlite3.Database(dbFile);
-var db_file_size = fs.statSync(dbFile)["size"];
 
 var dbMaster = {
-
   init: function () {
     db.serialize(function () {
-      if (!db_file_size) {
-        db.run("CREATE TABLE books (id INTEGER PRIMARY KEY, author TEXT, title TEXT, description TEXT)")
+      if (!fs.existsSync(dbFile)) {
+        db.run("CREATE TABLE books (id INTEGER PRIMARY KEY, author TEXT, isbn VARCHAR(50), cover TEXT, title TEXT, summary TEXT, date TEXT)");
+        db.run("CREATE TABLE ideas (id INTEGER PRIMARY KEY, book_id INTEGER, idea1 TEXT, idea2 TEXT, idea3 TEXT, FOREIGN KEY (book_id) REFERENCES books(id))");
+        db.run("CREATE TABLE booksToRead (id INTEGER PRIMARY KEY, author TEXT, isbn VARCHAR(50), title TEXT, cover TEXT, date TEXT)");
       }
     });
   },
 
-  close: function () {
-    db.close(function () {
-      console.log("Database has been successfully closed.");
-    });
+  getBooksToRead: function (books, callback) {
+    db.each("SELECT * FROM booksToRead", function (err, row) {
+      if (err) { console.log("Error getting books", err); }
+      books.push(row);
+    }, callback);
   },
 
-  insert: function () {
-    if (arguments.length === 3) {
-      var query = db.prepare("INSERT INTO books VALUES(null, $author, $title, $description)", {
-        $author: arguments[0],
-        $title: arguments[1],
-        $description: arguments[2]
+  insertBookToRead: function (book, callback) {
+    db.run('INSERT INTO booksToRead VALUES (null, $author, $isbn, $title, $cover, date("now"))', {
+      $author: book.author,
+      $title: book.title,
+      $isbn: book.isbn,
+      $cover: book.cover
+    }, function (err) {
+      console.log(err);
+    });
+    callback();
+  },
+
+  deleteBookToRead: function (bookId, callback) {
+    db.run("DELETE FROM booksToRead WHERE id = $id", {
+      $id: bookId
+    }, function (err) {
+      if (err) console.log(err);
+      else console.log("Deleted.");
+    });
+    callback();
+  },
+
+  insert: function (book, callback) {
+    db.run('INSERT INTO books VALUES (null, $author, $isbn, $cover, $title, $summary, date("now"))', {
+      $title: book.title,
+      $isbn: book.isbn,
+      $cover: book.cover,
+      $author: book.author,
+      $summary: book.summary
+    }, function (err) {
+      if (err) console.log(err);
+      else console.log("Created.");
+    });
+
+    db.get("SELECT id FROM books WHERE isbn = $isbn", {
+      $isbn: book.isbn
+    }, function (err, row) {
+      book.book_id = row.id;
+      db.run("INSERT INTO ideas VALUES (null, $book_id, $idea1, $idea2, $idea3)", {
+        $book_id: book.book_id,
+        $idea1: book.idea1,
+        $idea2: book.idea2,
+        $idea3: book.idea3
+      }, function (err) {
+        if (err) console.log(err);
+        else console.log("Ideas added.");
       });
-      query.run();
-      return true;
-    } else {
-      return false;
-    }
+      callback();
+    });
   },
 
-  select: function (result, callback) {
-    db.each("SELECT id, author, title, description FROM books", function (err, row) {
-      result.push([row.id, row.author, row.title]);
-    }, function () {
-      callback()
+  getAllBooks: function (books, callback) {
+    db.each("SELECT books.id, books.date, title, author, isbn, cover, summary, idea1, idea2, idea3 FROM books JOIN ideas ON books.id = ideas.book_id", function (err, row) {
+      books.push(row);
+    }, callback);
+  },
+
+  updateBook: function (book, callback) {
+    db.run("UPDATE books SET author = $author, isbn = $isbn, cover = $cover, title = $title, summary = $summary WHERE id = $id", {
+      $id: book.id,
+      $title: book.title,
+      $isbn: book.isbn,
+      $cover: book.cover,
+      $author: book.author,
+      $summary: book.summary
+    }, function (err) {
+      if (err) console.log(err);
+      else console.log("Updated.");
     });
+
+    db.run("UPDATE ideas SET idea1 = $idea1, idea2 = $idea2, idea3 = $idea3 WHERE book_id = $id", {
+      $id: book.id,
+      $idea1: book.idea1,
+      $idea2: book.idea2,
+      $idea3: book.idea3
+    });
+    callback();
+  },
+
+  deleteBook: function (bookId, callback) {
+    db.run("DELETE FROM books WHERE id = $id", {
+      $id: bookId
+    }, function (err) {
+      if (err) console.log(err);
+      else console.log("Deleted.");
+    });
+    callback();
   }
 }
 

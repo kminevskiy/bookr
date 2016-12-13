@@ -4,7 +4,7 @@ doctype html
 html
   head
     title Bookr
-    link(href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet")
+    link(href="https://fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet")
     +stylesheets("reset")
     +stylesheets("style")
     +javascripts("/vendor/all")
@@ -19,8 +19,8 @@ html
     block content
   +javascripts("application")
   +javascripts("models/book")
-  +javascripts("collections/books")
-  +javascripts("views/new", "views/index", "views/book", "views/menu", "views/edit_modal", "views/error_modal")
+  +javascripts("collections/books", "collections/books_to_read")
+  +javascripts("views/new", "views/index", "views/book", "views/menu", "views/edit_modal", "views/error_modal", "views/details_modal", "views/empty_stub", "views/read_index", "views/read_menu", "views/new_toread", "views/book_to_read")
   +javascripts("routers/router")
   script(type="text/javascript").
     app.init()

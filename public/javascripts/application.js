@@ -1,27 +1,50 @@
 var app = {
   bindEvents: function () {
     _.extend(this, Backbone.Events);
-    this.on("goHome", this.updateUrlToHome);
+    this.on("redirectToNotesList", this.updateUrlToNotes);
+    this.on("redirectToReadList", this.updateUrlToReadList);
   },
 
-  updateUrlToHome() {
-    Backbone.history.navigate("/", true);
+  updateUrlToNotes: function () {
+    Backbone.history.navigate("/", { trigger: true });
+  },
+
+  updateUrlToReadList: function () {
+    Backbone.history.navigate("/read", { trigger: true });
   },
 
   init: function () {
-    this.menu = new MenuView();
+    _.bindAll(this, "newBookForm", "indexView", "showReadingList", "addBookToRead");
+    this.books = new Books();
+    this.books.fetch();
     this.bindEvents();
   },
 
   newBookForm: function () {
-    this.new_book = new NewBookView();
+    this.newBook = new NewBookView();
   },
 
   indexView: function () {
-    Backbone.history.navigate("/", {})
-    if (this.new_book) {
-      this.new_book.remove();
-    }
+    this.menu = new DefaultMenuView();
     this.books = new Books();
+    this.books.fetch({
+      success: function (models) {
+        new IndexView({ collection: models });
+      }
+    });
+  },
+
+  showReadingList: function () {
+    this.menu = new ToReadMenuView();
+    this.readingList = new BooksToRead();
+    this.readingList.fetch({
+      success: function (models) {
+        new ReadIndexView({ collection: models });
+      }
+    });
+  },
+
+  addBookToRead: function () {
+    this.newBookToRead = new NewToReadView();
   }
 }

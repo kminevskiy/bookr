@@ -6,18 +6,9 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var fs = require("fs");
 var sassMiddleware = require("node-sass-middleware");
-var sqlite3 = require("sqlite3").verbose();
+var dbMaster = require("./local_modules/db_master");
 
-var dbFile = path.resolve(path.dirname(__dirname), "bookr/db/books.db");
-var db = new sqlite3.Database(dbFile);
-
-//var db_file_size = fs.statSync(dbFile)["size"];
-
-db.serialize(function () {
-  if (!fs.existsSync(dbFile)) {
-    db.run("CREATE TABLE books (id INTEGER PRIMARY KEY, author TEXT, isbn VARCHAR(50), cover TEXT, title TEXT, description TEXT)")
-  }
-});
+dbMaster.init();
 
 var all = require('./routes/all');
 

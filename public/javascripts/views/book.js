@@ -11,7 +11,12 @@ var BookView = Backbone.View.extend({
     "mouseenter": "toggleActions",
     "mouseleave": "toggleActions",
     "click .edit-book": "editBook",
-    "click .delete-book": "deleteBook"
+    "click .delete-book": "deleteBook",
+    "click .details-book": "openDetails"
+  },
+
+  openDetails: function () {
+    new BookDetailsView({ model: this.model });
   },
 
   editBook: function () {

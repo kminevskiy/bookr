@@ -9,7 +9,7 @@
   font-size: 16px;
   padding: 5px 10px;
   border: 1px solid $font_color;
-  @include element-transition(border-color 500ms ease-in-out, color 500ms ease-in-out);
+  @include element-transition(border-color 300ms ease-in-out, color 300ms ease-in-out);
   @include border-radius(3px);
 }
 

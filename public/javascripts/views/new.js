@@ -23,22 +23,16 @@ var NewBookView = Backbone.View.extend({
   },
 
   isbnExists: function (e) {
-    var fieldValue = $(e.currentTarget).val();
-    var self = this;
+    var newISBN = $(e.currentTarget).val();
+    var bookFound = app.books.findWhere({ isbn: newISBN });
 
-    $.ajax({
-      url: "/check_isbn",
-      method: "post",
-      data: {input: fieldValue},
-      success: function (data) {
-        if (data.book) {
-          self.errorMessage = new ErrorMessageView(data.book);
-          self.errorMessage.render();
-        } else {
-          self.errorMessage ? self.errorMessage.remove() : 0;
-        }
-      }
-    });
+    if (bookFound) {
+      this.errorMessage = new ErrorMessageView(bookFound.toJSON());
+      this.errorMessage.render().$el.hide().fadeIn(500);
+    } else {
+      if (this.errorMessage) this.errorMessage.trigger("destroyView");
+      delete this.errorMessage;
+    }
   },
 
   resetForm: function () {
@@ -55,7 +49,8 @@ var NewBookView = Backbone.View.extend({
         method: $form.attr("method"),
         data: $form.serialize()
       });
-      app.trigger("goHome");
+
+      app.trigger("redirectToNotesList");
       this.remove();
     }
   }

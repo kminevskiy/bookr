@@ -6,8 +6,8 @@ var IndexView = Backbone.View.extend({
   },
 
   render: function () {
-    this.collection.each(function (model) {
-      var bookView = new BookView({ model: model });
+    this.collection.each(function (book) {
+      var bookView = new BookView({ model: book });
       this.$el.append(bookView.render().el)
     }, this);
 
