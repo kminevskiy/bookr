@@ -10,7 +10,8 @@ var ModalView = Backbone.View.extend({
     return this;
   },
 
-  initialize: function () {
+  initialize: function (attrs) {
+    this.offset = attrs.offset;
     this.listenTo(this, "manualClose", this.closeModal);
     this.render();
   },
@@ -18,6 +19,12 @@ var ModalView = Backbone.View.extend({
   events: {
     submit: "updateBook",
     "click .close": "closeModal"
+  },
+
+  scrollBackToBook: function (offset) {
+    $("html, body").animate({
+      scrollTop: offset
+    }, 600);
   },
 
   updateBook: function (e) {
@@ -37,6 +44,7 @@ var ModalView = Backbone.View.extend({
   },
 
   closeModal: function () {
+    this.scrollBackToBook(this.offset);
     this.$("#edit-modal").fadeOut(500, function () {
       this.remove();
     });

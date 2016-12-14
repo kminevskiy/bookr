@@ -10,7 +10,8 @@ var BookDetailsView = Backbone.View.extend({
     return this;
   },
 
-  initialize: function () {
+  initialize: function (attrs) {
+    this.offset = attrs.offset;
     this.listenTo(this, "manualClose", this.closeModal);
     this.render();
   },
@@ -19,10 +20,16 @@ var BookDetailsView = Backbone.View.extend({
     "click .close": "closeModal"
   },
 
+  scrollBackToBook: function (offset) {
+    $("html, body").animate({
+      scrollTop: offset
+    }, 600);
+  },
+
   closeModal: function () {
+    this.scrollBackToBook(this.offset);
     this.$("#details").fadeOut(500, function () {
       this.remove();
     });
   }
-
 });

@@ -30,6 +30,11 @@ input[type="button"] {
   cursor: pointer;
 }
 
+img {
+  width: 180px;
+  height: 270px;
+}
+
 /*
 ====================
 New book form styling
@@ -349,11 +354,11 @@ Book details modal styling
 
 #details {
   display: none;
-  position: fixed;
+  position: absolute;
   top: 20px;
   right: 20px;
-  bottom: 20px;
   left: 20px;
+  padding: 0 20px 35px 0;
   background-color: #fff;
   z-index: 2;
 
@@ -399,6 +404,7 @@ Buttons styling
 
 img.close {
   width: 28px;
+  height: 28px;
   position: absolute;
   top: 5px;
   right: 5px;

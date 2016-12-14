@@ -10,17 +10,37 @@ var BookView = Backbone.View.extend({
   events: {
     "mouseenter": "toggleActions",
     "mouseleave": "toggleActions",
-    "click .edit-book": "editBook",
     "click .delete-book": "deleteBook",
-    "click .details-book": "openDetails"
+    "click .details-book": function () {
+      this.openDetails();
+      this.scrollToModal();
+    },
+    "click .edit-book": function () {
+      this.editBook();
+      this.scrollToModal();
+    }
+  },
+
+  scrollToModal: function () {
+    $("html, body").animate({
+      scrollTop: 0
+    }, 600);
   },
 
   openDetails: function () {
-    new BookDetailsView({ model: this.model });
+    var offsetTop = this.$el[0].offsetTop;
+    new BookDetailsView({
+      model: this.model,
+      offset: offsetTop
+    });
   },
 
   editBook: function () {
-    new ModalView({ model: this.model });
+    var offsetTop = this.$el[0].offsetTop;
+    new ModalView({
+      model: this.model,
+      offset: offsetTop
+    });
   },
 
   deleteBook: function (e) {
@@ -29,7 +49,7 @@ var BookView = Backbone.View.extend({
     $.ajax({
       url: "/books/" + bookId,
       method: "delete",
-      complete: function (data, stat) {
+      complete: function (data) {
         self.model.destroy();
         self.remove();
       }
