@@ -8,6 +8,7 @@ $positive_button_color: #1A9623;
 $negative_button_color: #C42927;
 $reading_list_button_color: #1796C9;
 $modify_button_color: $reading_list_button_color;
+$to_read_book_border: #D1D1D1;
 
 * {
   box-sizing: border-box;
@@ -120,6 +121,9 @@ Clear fix
 Book list item styling
 ==================
 */
+span {
+  font-weight: bold;
+}
 
 main {
 
@@ -155,10 +159,6 @@ main {
         padding: 0 0 0 195px;
       }
     }
-  }
-
-  span {
-    font-weight: bold;
   }
 
   .italic {
@@ -199,7 +199,7 @@ Book actions buttons styling
 }
 
 .delete-book {
-  top: 90px;
+  top: 85px;
 
   &:hover {
     color: $negative_button_color;
@@ -237,6 +237,10 @@ nav {
   li {
     padding: 0 0 0 15px;
     margin: 10px;
+
+    + li {
+      margin-left: -10px;
+    }
   }
 
   a:not(.new-book-button) {
@@ -459,8 +463,8 @@ Empty books list stub styling
   margin: 100px 0 0 0;
 
   li {
-    border-top: 1px solid #D1D1D1;
-    border-bottom: 1px solid #D1D1D1;
+    border-top: 1px solid $to_read_book_border;
+    border-bottom: 1px solid $to_read_book_border;
     overflow: hidden;
     height: 85px;
 
@@ -468,6 +472,11 @@ Empty books list stub styling
       display: inline-block;
       padding: 0 10px 0 0;
       font-size: 14px;
+    }
+
+    img {
+      height: 58px;
+      width: 38px;
     }
 
     input[type=button] {
