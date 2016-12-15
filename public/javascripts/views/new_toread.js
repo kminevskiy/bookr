@@ -24,15 +24,17 @@ var NewToReadView = Backbone.View.extend({
   submitBookToRead: function (e) {
     e.preventDefault();
     var $form = this.$("form");
+    var self = this;
 
     $.ajax({
       url: $form.attr("action"),
       method: $form.attr("method"),
-      data: $form.serialize()
+      data: $form.serialize(),
+      complete: function () {
+        app.trigger("redirectToReadList");
+        self.remove();
+      }
     });
-
-    app.trigger("redirectToReadList");
-    this.remove();
   },
 
   resetForm: function () {

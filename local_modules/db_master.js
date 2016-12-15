@@ -1,5 +1,6 @@
 var fs = require("fs");
 var path = require("path");
+var request = require("request");
 var sqlite3 = require("sqlite3").verbose();
 
 var dbFile = path.resolve(path.dirname(__dirname), "db/books.db");
@@ -13,6 +14,16 @@ var dbMaster = {
         db.run("CREATE TABLE ideas (id INTEGER PRIMARY KEY, book_id INTEGER, idea1 TEXT, idea2 TEXT, idea3 TEXT, FOREIGN KEY (book_id) REFERENCES books(id))");
         db.run("CREATE TABLE booksToRead (id INTEGER PRIMARY KEY, author TEXT, isbn VARCHAR(50), title TEXT, cover TEXT, date TEXT)");
       }
+    });
+  },
+
+  checkCoverExists: function (coverLink, callback) {
+    var emptyCover = "/images/no_cover.png";
+    var cover;
+
+    request(coverLink, function (err, res) {
+      cover = res.statusCode === 200 ? coverLink : emptyCover;
+      callback(cover);
     });
   },
 

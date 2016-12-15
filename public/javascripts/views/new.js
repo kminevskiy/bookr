@@ -42,16 +42,18 @@ var NewBookView = Backbone.View.extend({
   submitBook: function (e) {
     e.preventDefault();
     var $form = this.$("form");
+    var self = this;
 
     if (!this.errorMessage) {
       $.ajax({
         url: $form.attr("action"),
         method: $form.attr("method"),
-        data: $form.serialize()
+        data: $form.serialize(),
+        complete: function () {
+          app.trigger("redirectToNotesList");
+          self.remove();
+        }
       });
-
-      app.trigger("redirectToNotesList");
-      this.remove();
     }
   }
 });

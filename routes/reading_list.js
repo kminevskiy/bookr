@@ -16,7 +16,7 @@ module.exports = function (router) {
 
   router.post("/books_to_read", function (req, res) {
     var book = req.body;
-    var cover = "http://covers.openlibrary.org/b/isbn/" + book.isbn + "-S.jpg";
+    var cover = "http://covers.openlibrary.org/b/isbn/" + book.isbn + "-S.jpg?default=false";
     book.cover = cover;
     dbMaster.insertBookToRead(book, function () {
       res.status(200).end();
@@ -25,7 +25,6 @@ module.exports = function (router) {
 
   router.delete("/books_to_read", function (req, res) {
     var id = req.body.id;
-    console.log(id);
     dbMaster.deleteBookToRead(id, function () {
       res.status(200).end();
     });
