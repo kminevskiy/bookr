@@ -17,9 +17,11 @@ module.exports = function (router) {
   router.post("/books_to_read", function (req, res) {
     var book = req.body;
     var cover = "http://covers.openlibrary.org/b/isbn/" + book.isbn + "-S.jpg?default=false";
-    book.cover = cover;
-    dbMaster.insertBookToRead(book, function () {
-      res.status(200).end();
+    dbMaster.checkCoverExists(cover, function (resultingCover) {
+      book.cover = resultingCover;
+      dbMaster.insertBookToRead(book, function () {
+        res.status(200).end();
+      });
     });
   });
 

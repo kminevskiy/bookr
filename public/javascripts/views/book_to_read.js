@@ -20,14 +20,17 @@ var BookToReadView = Backbone.View.extend({
 
   deleteBookToRead: function () {
     var id = this.el.id;
+    var self = this;
 
     $.ajax({
       url: "/books_to_read",
       method: "delete",
-      data: {id: id}
+      data: {id: id},
+      complete: function () {
+        self.model.destroy();
+        self.remove();
+      }
     });
-
-    this.remove();
   },
 
   showActions: function () {

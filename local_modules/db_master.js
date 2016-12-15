@@ -29,7 +29,6 @@ var dbMaster = {
 
   getBooksToRead: function (books, callback) {
     db.each("SELECT * FROM booksToRead", function (err, row) {
-      if (err) { console.log("Error getting books", err); }
       books.push(row);
     }, callback);
   },
@@ -43,6 +42,7 @@ var dbMaster = {
     }, function (err) {
       console.log(err);
     });
+
     callback();
   },
 
@@ -53,36 +53,30 @@ var dbMaster = {
       if (err) console.log(err);
       else console.log("Deleted.");
     });
+
     callback();
   },
 
   insert: function (book, callback) {
+    var bookId;
+
     db.run('INSERT INTO books VALUES (null, $author, $isbn, $cover, $title, $summary, date("now"))', {
       $title: book.title,
       $isbn: book.isbn,
       $cover: book.cover,
       $author: book.author,
       $summary: book.summary
-    }, function (err) {
-      if (err) console.log(err);
-      else console.log("Created.");
-    });
-
-    db.get("SELECT id FROM books WHERE isbn = $isbn", {
-      $isbn: book.isbn
-    }, function (err, row) {
-      book.book_id = row.id;
+    }, function () {
+      bookId = this.lastID;
       db.run("INSERT INTO ideas VALUES (null, $book_id, $idea1, $idea2, $idea3)", {
-        $book_id: book.book_id,
+        $book_id: bookId,
         $idea1: book.idea1,
         $idea2: book.idea2,
         $idea3: book.idea3
-      }, function (err) {
-        if (err) console.log(err);
-        else console.log("Ideas added.");
-      });
-      callback();
     });
+
+    callback();
+  })
   },
 
   getAllBooks: function (books, callback) {
@@ -110,6 +104,7 @@ var dbMaster = {
       $idea2: book.idea2,
       $idea3: book.idea3
     });
+
     callback();
   },
 
@@ -120,6 +115,14 @@ var dbMaster = {
       if (err) console.log(err);
       else console.log("Deleted.");
     });
+
+    db.run("DELETE FROM ideas WHERE book_id = $id", {
+      $id: bookId
+    }, function (err) {
+      if (err) console.log(err);
+      else console.log("Ideas deleted.");
+    });
+
     callback();
   }
 }

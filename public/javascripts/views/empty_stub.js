@@ -9,12 +9,13 @@ var EmptyStubView = Backbone.View.extend({
   template: emptyStub,
 
   render: function () {
-    this.$el.html(this.template());
+    this.$el.html(this.template(this.page));
 
     return this;
   },
 
-  initialize: function () {
+  initialize: function (attrs) {
+    this.page = attrs;
     this.listenTo(this, "destroyEmptyStub", this.remove);
   }
 });
