@@ -2,11 +2,19 @@
 <form action="/books" method="post">
   <fieldset id="main-form">
     <label for="title">Title</label>
-    <input type="text" name="title" id="title" placeholder="Some Awesome Book">
+    <input type="text" name="title" id="title" placeholder="Some Awesome Book" autofocus>
     <label for="author">Author</label>
     <input type="text" name="author" id="author" placeholder="By Some Amazing Author">
     <label for="isbn">ISBN</label>
     <input type="number" name="isbn" id="isbn" placeholder="Identified by ISBN">
+    <label for="rating">Rating</label>
+    <select name="rating">
+      <option value="Horrible">Horrible</option>
+      <option value="Bad">Bad</option>
+      <option value="Okay">Okay</option>
+      <option value="Good">Good</option>
+      <option value="Excellent">Excellent</option>
+    </select>
     <div id="error-message"></div>
     <label for="summary">Summary</label>
     <textarea name="summary" id="summary" placeholder="A Few Words About It"></textarea>

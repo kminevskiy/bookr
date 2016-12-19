@@ -1,10 +1,13 @@
-<img src="{{cover}}" alt="{{title}}">
-<div class="description-container">
-  <h3>Book: <span class="italic">{{title}}</span></h3>
-  <p><span>By</span>: {{author}}</p>
-  <p><span>ISBN</span>: {{isbn}}</p>
-  <p class="description"><span>Summary</span>: {{summary}}</p>
+<div class="img-container">
+  <img src="{{cover}}" alt="{{title}}">
+</div>
+<div class="actions">
+  <input data-id="{{id}} "type="button" value="Details" class="details-book">
   <input data-id="{{id}} " type="button" value="Edit" class="edit-book">
   <input data-id="{{id}} "type="button" value="Delete" class="delete-book">
-  <input data-id="{{id}} "type="button" value="Details" class="details-book">
+</div>
+<div class="description-container">
+  <h3><span class="italic">{{title}}</span></h3>
+  <p><span>By</span>: {{author}}</p>
+  <p class="description"><span>Summary</span>: {{summary}}</p>
 </div>

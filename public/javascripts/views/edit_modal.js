@@ -5,15 +5,41 @@ var ModalView = Backbone.View.extend({
 
   render: function () {
     this.$el.html(this.template(this.model.toJSON()));
+    this.$("select")[0].selectedIndex = this.rating;
     $("#modal").html(this.$el).find("#edit-modal").fadeIn(500);
 
     return this;
   },
 
   initialize: function (attrs) {
+    this.rating = this.convertRating();
     this.offset = attrs.offset;
     this.listenTo(this, "manualClose", this.closeModal);
     this.render();
+  },
+
+  convertRating: function () {
+    var ratingString = this.model.get("rating");
+    var ratingInt;
+
+    switch (ratingString) {
+      case "Horrible":
+        ratingInt = 0;
+        break;
+      case "Bad":
+        ratingInt = 1;
+        break;
+      case "Okay":
+        ratingInt = 2;
+        break;
+      case "Good":
+        ratingInt = 3;
+        break;
+      case "Excellent":
+        ratingInt = 4;
+        break;
+    }
+    return ratingInt;
   },
 
   events: {

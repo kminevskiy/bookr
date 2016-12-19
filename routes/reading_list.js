@@ -25,8 +25,8 @@ module.exports = function (router) {
     });
   });
 
-  router.delete("/books_to_read", function (req, res) {
-    var id = req.body.id;
+  router.delete("/books_to_read/:id", function (req, res) {
+    var id = req.params.id;
     dbMaster.deleteBookToRead(id, function () {
       res.status(200).end();
     });

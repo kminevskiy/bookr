@@ -8,8 +8,6 @@ var BookView = Backbone.View.extend({
   template: book,
 
   events: {
-    "mouseenter": "toggleActions",
-    "mouseleave": "toggleActions",
     "click .delete-book": "deleteBook",
     "click .details-book": function () {
       this.openDetails();
@@ -44,20 +42,12 @@ var BookView = Backbone.View.extend({
   },
 
   deleteBook: function (e) {
-    var bookId = $(e.currentTarget).data("id");
-    var self = this;
-    $.ajax({
-      url: "/books/" + bookId,
-      method: "delete",
-      complete: function (data) {
-        self.model.destroy();
-        self.remove();
-      }
-    });
+    this.model.destroy();
+    this.remove();
   },
 
   toggleActions: function () {
-    var $actionButtons = this.$("input[type='button']");
+    var $actionButtons = this.$(".actions");
     $actionButtons.fadeToggle(500);
   },
 

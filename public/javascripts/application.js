@@ -15,6 +15,7 @@ var app = {
 
   init: function () {
     _.bindAll(this, "newBookForm", "indexView", "showReadingList", "addBookToRead");
+    this.menu = new MenuView();
     this.books = new Books();
     this.books.fetch();
     this.bindEvents();
@@ -25,21 +26,29 @@ var app = {
   },
 
   indexView: function () {
-    this.menu = new DefaultMenuView();
+    if (this.view) this.view.remove();
+    this.menu.render({
+      action: "Add note",
+      href: "/new"
+    });
     this.books = new Books();
     this.books.fetch({
       success: function (models) {
-        new IndexView({ collection: models });
+        app.view = new IndexView({ collection: models });
       }
     });
   },
 
   showReadingList: function () {
-    this.menu = new ToReadMenuView();
+    if (this.view) this.view.remove();
+    this.menu.render({
+      action: "Add book",
+      href: "/new_toread"
+    });
     this.readingList = new BooksToRead();
     this.readingList.fetch({
       success: function (models) {
-        new ReadIndexView({ collection: models });
+        app.view = new ReadIndexView({ collection: models });
       }
     });
   },

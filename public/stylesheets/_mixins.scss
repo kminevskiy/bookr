@@ -5,12 +5,8 @@
   border-radius: $radius;
 }
 
-@mixin transparent-button($font_color) {
-  font-size: 16px;
-  padding: 5px 10px;
-  border: 1px solid $font_color;
-  @include element-transition(border-color 300ms ease-in-out, color 300ms ease-in-out);
-  @include border-radius(3px);
+@mixin nav-button($font_color) {
+  @include element-transition(color 300ms ease-in-out, border-color 300ms ease-in-out);
 }
 
 @mixin box-shadow($args...) {

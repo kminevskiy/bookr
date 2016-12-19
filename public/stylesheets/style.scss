@@ -2,7 +2,6 @@
 
 $h1_size: 28px;
 $main_font_color: #424242;
-$book_bg: #FAFAFA;
 $body: #fff;
 $positive_button_color: #1A9623;
 $negative_button_color: #C42927;
@@ -30,9 +29,20 @@ input[type="button"] {
   cursor: pointer;
 }
 
+span {
+  font-weight: bold;
+}
+
+.img-container {
+  max-width: 180px;
+  min-height: 270px;
+  @include border-radius(5%);
+  float: left;
+  margin: 0 15px 0 0;
+}
+
 img {
-  width: 180px;
-  height: 270px;
+  width: 100%;
 }
 
 /*
@@ -57,20 +67,23 @@ New book form styling
     font-size: 16px;
   }
 
-  input, textarea {
+  input, textarea, select {
     font-size: 16px;
     padding: 0 0 0 5px;
     margin: 10px 0;
     display: block;
-    @include reset-appearance();
     @include border-radius(4px);
-    border: 1px solid #9C9C9C;
+    border: 1px solid $main_font_color;
     outline: none;
     width: 100%;
   }
 
-  input {
+  input, select {
     height: 32px;
+  }
+
+  select {
+    background-color: $body;
   }
 
   textarea {
@@ -80,7 +93,8 @@ New book form styling
   }
 
   input:focus,
-  textarea:focus {
+  textarea:focus,
+  select:focus {
     border-color: #525252;
   }
 
@@ -88,26 +102,21 @@ New book form styling
   .new-reset {
     width: 20%;
     display: inline-block;
-    opacity: .8;
-    border: 1px solid $book_bg;
-    @include border-radius(4px);
-    @include element-transition(opacity, 300ms);
-    color: #fff;
+    opacity: .7;
+    border: 1px solid $main_font_color;
+    @include border-radius(8px);
+    @include element-transition(opacity, 300ms, ease-in-out);
+    color: $main_font_color;
 
     &:hover {
       opacity: 1;
     }
   }
 
-  .new-submit {
-    background-color: #1F9CF5;
-  }
-
-  .new-reset {
-    background-color: #404040;
+  .new-submit, .new-reset {
+    background-color: $body;
   }
 }
-
 
 /*
 ==================
@@ -126,35 +135,27 @@ Clear fix
 Book list item styling
 ==================
 */
-span {
-  font-weight: bold;
-}
 
 main {
-
   width: 80%;
   margin: 0 auto;
 
   #content {
-
     li {
       position: relative;
-      clear: both;
       margin: 10px;
-      padding: 15px;
+      padding: 15px 15px 25px 15px;
       cursor: default;
       background-color: $body;
       @include element-transition(border-color 300ms ease-in-out);
 
       h3, p {
         margin: 0 0 5px 0;
-        max-width: 400px;
+        max-width: 500px;
       }
 
-      img {
-        @include border-radius(5%);
-        float: left;
-        margin: 0 15px 0 0;
+      h3 {
+        margin-top: 10px;
       }
 
       .description-container {
@@ -181,43 +182,39 @@ Book actions buttons styling
 ===================
 */
 
-.edit-book,
-.delete-book,
-.details-book {
-  outline: none;
-  background-color: $body;
-  display: none;
-  position: absolute;
-  right: 10px;
-  margin: 0 0 0 10px;
-  @include reset-appearance();
-  @include transparent-button($main_font_color);
-}
+.actions {
 
-.edit-book {
-  top: 50px;
-
-  &:hover {
-    color: $modify_button_color;
-    border-color: $modify_button_color;
+  .edit-book,
+  .delete-book,
+  .details-book {
+    @include reset-appearance();
+    @include nav-button($main_font_color);
+    outline: none;
+    background-color: $body;
+    border: 1px solid $main_font_color;
+    padding: 4px 8px;
+    font-size: 14px;
   }
-}
 
-.delete-book {
-  top: 85px;
-
-  &:hover {
-    color: $negative_button_color;
-    border-color: $negative_button_color;
+  .edit-book {
+    &:hover {
+      color: $modify_button_color;
+      border-color: $modify_button_color;
+    }
   }
-}
 
-.details-book {
-  top: 15px;
+  .delete-book {
+    &:hover {
+      color: $negative_button_color;
+      border-color: $negative_button_color;
+    }
+  }
 
-  &:hover {
-    color: $positive_button_color;
-    border-color: $positive_button_color;
+  .details-book {
+    &:hover {
+      color: $positive_button_color;
+      border-color: $positive_button_color;
+    }
   }
 }
 
@@ -228,66 +225,51 @@ Default header menu styling
 */
 
 nav {
-
-  width: 80%;
-  margin: 0 auto;
+  margin: 0 auto 50px auto;
   position: relative;
+  background-color: #000;
+  padding-left: 13%;
+
+  h3 {
+    display: inline-block;
+  }
 
   li, a {
     display: inline-block;
     text-decoration: none;
-    color: $main_font_color;
+    color: #757575;
   }
 
   li {
-    padding: 0 0 0 15px;
-    margin: 10px;
-
+    text-align: center;
+    width: 100px;
     + li {
       margin-left: -10px;
     }
   }
 
-  a:not(.new-book-button) {
-    @include transparent-button($main_font_color);
-  }
+  a {
+    width: 100%;
+    padding: 20px 0;
+    border-bottom: 3px solid #000;
+    @include nav-button($main_font_color);
 
-  .notes-button {
     &:hover {
-      color: $positive_button_color;
-      border-color: $positive_button_color;
-    }
-  }
-
-  .to-read-button {
-    &:hover {
-      color: $reading_list_button_color;
-      border-color: $reading_list_button_color;
+      color: #fff;
+      border-color: #fff;
     }
   }
 
   .add-read {
-    position: absolute;
-    right: 10px;
-    top: 10px;
-    margin: 0;
+    float: right;
+    margin: 0 25px 0 0;
   }
 
   .new-book-button {
-    margin: 0 0 0 10px;
-    color: #000;
-    opacity: .6;
-    @include element-transition(opacity 300ms ease-in-out);
-
     &:before {
       content: "\002B";
-      font-size: 22px;
+      font-size: 16px;
       padding: 0 5px 0 0;
-      vertical-align: -5%;
-    }
-
-    &:hover {
-      opacity: 1;
     }
   }
 }
@@ -324,8 +306,9 @@ Edit book modal and overlay styling
   }
 
   .update {
-    background-color: $book_bg;
-    @include transparent-button($main_font_color);
+    width: 20%;
+    background-color: $body;
+    @include nav-button($main_font_color);
   }
 
   .update:hover {
@@ -368,7 +351,6 @@ Book details modal styling
 
   img:not(.close) {
     margin: 0 0 0 30px;
-    float: left;
   }
 
   ul {
@@ -483,6 +465,8 @@ Empty books list stub styling
     img {
       height: 58px;
       width: 38px;
+      float: left;
+      margin-right: 15px;
     }
 
     input[type=button] {
@@ -503,3 +487,4 @@ Empty books list stub styling
     }
   }
 }
+

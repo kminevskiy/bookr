@@ -29,7 +29,7 @@ var IndexView = Backbone.View.extend({
 
   initialize: function () {
     this.listenTo(this.collection, "remove", this.renderStubIfEmpty);
-    this.emptyView = new EmptyStubView({ href: "/new" });
+    this.emptyView = new EmptyStubView({ items: "notes", href: "/new" });
     this.render();
   }
 });

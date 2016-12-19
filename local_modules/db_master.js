@@ -10,7 +10,7 @@ var dbMaster = {
   init: function () {
     db.serialize(function () {
       if (!fs.existsSync(dbFile)) {
-        db.run("CREATE TABLE books (id INTEGER PRIMARY KEY, author TEXT, isbn VARCHAR(50), cover TEXT, title TEXT, summary TEXT, date TEXT)");
+        db.run("CREATE TABLE books (id INTEGER PRIMARY KEY, author TEXT, isbn VARCHAR(50), cover TEXT, title TEXT, rating TEXT, summary TEXT, date TEXT)");
         db.run("CREATE TABLE ideas (id INTEGER PRIMARY KEY, book_id INTEGER, idea1 TEXT, idea2 TEXT, idea3 TEXT, FOREIGN KEY (book_id) REFERENCES books(id))");
         db.run("CREATE TABLE booksToRead (id INTEGER PRIMARY KEY, author TEXT, isbn VARCHAR(50), title TEXT, cover TEXT, date TEXT)");
       }
@@ -39,8 +39,6 @@ var dbMaster = {
       $title: book.title,
       $isbn: book.isbn,
       $cover: book.cover
-    }, function (err) {
-      console.log(err);
     });
 
     callback();
@@ -49,9 +47,6 @@ var dbMaster = {
   deleteBookToRead: function (bookId, callback) {
     db.run("DELETE FROM booksToRead WHERE id = $id", {
       $id: bookId
-    }, function (err) {
-      if (err) console.log(err);
-      else console.log("Deleted.");
     });
 
     callback();
@@ -60,11 +55,12 @@ var dbMaster = {
   insert: function (book, callback) {
     var bookId;
 
-    db.run('INSERT INTO books VALUES (null, $author, $isbn, $cover, $title, $summary, date("now"))', {
+    db.run('INSERT INTO books VALUES (null, $author, $isbn, $cover, $title, $rating, $summary, date("now"))', {
       $title: book.title,
       $isbn: book.isbn,
       $cover: book.cover,
       $author: book.author,
+      $rating: book.rating,
       $summary: book.summary
     }, function () {
       bookId = this.lastID;
@@ -76,26 +72,24 @@ var dbMaster = {
     });
 
     callback();
-  })
+  });
   },
 
   getAllBooks: function (books, callback) {
-    db.each("SELECT books.id, books.date, title, author, isbn, cover, summary, idea1, idea2, idea3 FROM books JOIN ideas ON books.id = ideas.book_id", function (err, row) {
+    db.each("SELECT books.id, books.date, title, author, isbn, cover, rating, summary, idea1, idea2, idea3 FROM books JOIN ideas ON books.id = ideas.book_id", function (err, row) {
       books.push(row);
     }, callback);
   },
 
   updateBook: function (book, callback) {
-    db.run("UPDATE books SET author = $author, isbn = $isbn, cover = $cover, title = $title, summary = $summary WHERE id = $id", {
+    db.run("UPDATE books SET author = $author, isbn = $isbn, cover = $cover, title = $title, rating = $rating, summary = $summary WHERE id = $id", {
       $id: book.id,
       $title: book.title,
       $isbn: book.isbn,
       $cover: book.cover,
       $author: book.author,
+      $rating: book.rating,
       $summary: book.summary
-    }, function (err) {
-      if (err) console.log(err);
-      else console.log("Updated.");
     });
 
     db.run("UPDATE ideas SET idea1 = $idea1, idea2 = $idea2, idea3 = $idea3 WHERE book_id = $id", {
@@ -111,16 +105,10 @@ var dbMaster = {
   deleteBook: function (bookId, callback) {
     db.run("DELETE FROM books WHERE id = $id", {
       $id: bookId
-    }, function (err) {
-      if (err) console.log(err);
-      else console.log("Deleted.");
     });
 
     db.run("DELETE FROM ideas WHERE book_id = $id", {
       $id: bookId
-    }, function (err) {
-      if (err) console.log(err);
-      else console.log("Ideas deleted.");
     });
 
     callback();

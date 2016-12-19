@@ -1,16 +1,12 @@
 var menu = Handlebars.templates.menu;
 
-var DefaultMenuView = Backbone.View.extend({
+var MenuView = Backbone.View.extend({
   tagName: "ul",
 
   template: menu,
 
-  render: function () {
-    this.$el.html(this.template());
+  render: function (page) {
+    this.$el.html(this.template(page));
     $("nav").html(this.$el);
-  },
-
-  initialize: function () {
-    this.render();
   }
 });

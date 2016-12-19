@@ -1,5 +1,5 @@
 var BooksToRead = Backbone.Collection.extend({
-  model: Book,
+  model: BookToRead,
 
   url: "/books_to_read"
 });

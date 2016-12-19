@@ -22,14 +22,14 @@ var ReadIndexView = Backbone.View.extend({
 
   renderStubIfEmpty: function () {
     if (!this.collection.length) {
-      this.emptyView = new EmptyStubView({ href: "/new_toread" });
+      this.emptyView = new EmptyStubView({ items: "books", href: "/new_toread" });
       $("#content").html(this.emptyView.render().el);
     }
   },
 
   initialize: function () {
     this.listenTo(this.collection, "remove", this.renderStubIfEmpty);
-    this.emptyView = new EmptyStubView({ href: "/new_toread" });
+    this.emptyView = new EmptyStubView({ items: "books", href: "/new_toread" });
     this.render();
   }
 });
