@@ -4,14 +4,18 @@ var BookDetailsView = Backbone.View.extend({
   template: details,
 
   render: function () {
+    this.toggleNoscroll();
     this.$el.html(this.template(this.model.toJSON()));
     $("#modal").html(this.$el).find("#details").fadeIn(500);
 
     return this;
   },
 
+  toggleNoscroll: function () {
+    $("body").toggleClass("no-scroll");
+  },
+
   initialize: function (attrs) {
-    this.offset = attrs.offset;
     this.listenTo(this, "manualClose", this.closeModal);
     this.render();
   },
@@ -20,14 +24,8 @@ var BookDetailsView = Backbone.View.extend({
     "click .close": "closeModal"
   },
 
-  scrollBackToBook: function (offset) {
-    $("html, body").animate({
-      scrollTop: offset
-    }, 600);
-  },
-
   closeModal: function () {
-    this.scrollBackToBook(this.offset);
+    this.toggleNoscroll();
     this.$("#details").fadeOut(500, function () {
       this.remove();
     });

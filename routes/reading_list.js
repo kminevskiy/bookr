@@ -7,6 +7,10 @@ module.exports = function (router) {
     res.render("read");
   });
 
+  router.get("/new_toread", function (req, res) {
+    res.render("new_toread");
+  });
+
   router.get("/books_to_read", function (req, res) {
     var books = [];
     dbMaster.getBooksToRead(books, function () {

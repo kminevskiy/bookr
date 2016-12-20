@@ -4,16 +4,22 @@ var ModalView = Backbone.View.extend({
   template: modal,
 
   render: function () {
+    this.toggleNoscroll();
     this.$el.html(this.template(this.model.toJSON()));
+    // Set previously selected rating as default
     this.$("select")[0].selectedIndex = this.rating;
+
     $("#modal").html(this.$el).find("#edit-modal").fadeIn(500);
 
     return this;
   },
 
+  toggleNoscroll: function () {
+    $("body").toggleClass("no-scroll");
+  },
+
   initialize: function (attrs) {
     this.rating = this.convertRating();
-    this.offset = attrs.offset;
     this.listenTo(this, "manualClose", this.closeModal);
     this.render();
   },
@@ -23,34 +29,17 @@ var ModalView = Backbone.View.extend({
     var ratingInt;
 
     switch (ratingString) {
-      case "Horrible":
-        ratingInt = 0;
-        break;
-      case "Bad":
-        ratingInt = 1;
-        break;
-      case "Okay":
-        ratingInt = 2;
-        break;
-      case "Good":
-        ratingInt = 3;
-        break;
-      case "Excellent":
-        ratingInt = 4;
-        break;
+      case "Horrible": return 0
+      case "Bad": return 1
+      case "Okay": return 2
+      case "Good": return 3
+      case "Excellent": return 4
     }
-    return ratingInt;
   },
 
   events: {
     submit: "updateBook",
     "click .close": "closeModal"
-  },
-
-  scrollBackToBook: function (offset) {
-    $("html, body").animate({
-      scrollTop: offset
-    }, 600);
   },
 
   updateBook: function (e) {
@@ -66,12 +55,13 @@ var ModalView = Backbone.View.extend({
         self.model.set(updatedModel);
       }
     });
+
     this.trigger("manualClose");
   },
 
   closeModal: function () {
-    this.scrollBackToBook(this.offset);
-    this.$("#edit-modal").fadeOut(500, function () {
+    this.toggleNoscroll();
+    this.$el.fadeOut(500, function () {
       this.remove();
     });
   }

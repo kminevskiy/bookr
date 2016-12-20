@@ -45,6 +45,10 @@ img {
   width: 100%;
 }
 
+.no-scroll {
+  overflow: hidden;
+}
+
 /*
 ====================
 New book form styling
@@ -192,6 +196,7 @@ Book actions buttons styling
     outline: none;
     background-color: $body;
     border: 1px solid $main_font_color;
+    border-radius: 2px;
     padding: 4px 8px;
     font-size: 14px;
   }
@@ -282,14 +287,18 @@ Edit book modal and overlay styling
 
 #edit-modal {
   width: 80%;
+  max-width: 800px;
   display: none;
-  position: absolute;
+  position: fixed;
+  overflow-y: scroll;
   padding: 30px;
-  top: 50px;
-  right: 50px;
-  left: 50px;
+  top: 40px;
+  right: 0;
+  left: 0;
+  bottom: 10px;
   background-color: #fff;
   z-index: 2;
+  border-radius: 2px;
   @extend #new-book-form;
 
   + #overlay {
@@ -321,7 +330,7 @@ Edit book modal and overlay styling
   display: none;
   background-color: lightgray;
   position: fixed;
-  opacity: .3;
+  opacity: .6;
   top: 0;
   right: 0;
   bottom: 0;
@@ -337,10 +346,14 @@ Book details modal styling
 
 #details {
   display: none;
-  position: absolute;
+  position: fixed;
+  overflow-y: auto;
+  margin: 0 auto;
+  max-width: 800px;
   top: 20px;
-  right: 20px;
-  left: 20px;
+  right: 0;
+  left: 0;
+  bottom: 20px;
   padding: 0 20px 35px 0;
   background-color: #fff;
   z-index: 2;
@@ -375,7 +388,12 @@ Error message styling
 
 #error-message div {
   border: 2px solid $negative_button_color;
+  padding: 5px 0;
   margin: 5px 0;
+
+  p + p {
+    margin-top: 5px;
+  }
 }
 
 /*
