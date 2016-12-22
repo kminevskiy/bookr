@@ -22,7 +22,6 @@ var ReadIndexView = Backbone.View.extend({
 
   renderStubIfEmpty: function () {
     if (!this.collection.length) {
-      this.emptyView = new EmptyStubView({ items: "books", href: "/new_toread" });
       $("#content").html(this.emptyView.render().el);
     }
   },

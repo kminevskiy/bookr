@@ -2,6 +2,7 @@ var path = require("path");
 var dbMaster = require(path.resolve(path.dirname(__dirname), "local_modules/db_master"));
 
 module.exports = function (router) {
+
   router.get("/new", function (req, res) {
     res.render("new");
   });
@@ -20,7 +21,7 @@ module.exports = function (router) {
     dbMaster.checkCoverExists(cover, function (resultingCover) {
       book.cover = resultingCover;
       dbMaster.insert(book, function () {
-        res.status(200).end();
+        res.status(201).end();
       });
     });
   });

@@ -3,6 +3,7 @@ var app = {
     _.extend(this, Backbone.Events);
     this.on("redirectToNotesList", this.updateUrlToNotes);
     this.on("redirectToReadList", this.updateUrlToReadList);
+    this.on("redirectToQuotesList", this.updateUrlToQuotesList);
   },
 
   updateUrlToNotes: function () {
@@ -13,61 +14,17 @@ var app = {
     Backbone.history.navigate("/read", { trigger: true });
   },
 
+  updateUrlToQuotesList: function () {
+    Backbone.history.navigate("/quotes", { trigger: true });
+  },
+
   init: function () {
-    _.bindAll(this, "newBookForm", "indexView", "showReadingList", "addBookToRead");
+    _.bindAll(this, "newNote", "notesIndex", "readingIndex", "newBook", "quotesIndex", "newQuote");
     this.menu = new MenuView();
-    this.createCollections([{"books": Books}, {"readingList": BooksToRead}]);
-    this.bindEvents();
-  },
-
-  createCollections: function (names) {
-    var args;
-    if (arguments.length > 1) {
-      args = [].slice.call(arguments);
-      args.forEach(function (name, constr) {
-        this.name = new constr();
-        this.name.fetch();
-      }, this);
-    }
-  },
-
-  menuView: function (action, href) {
-    this.menu.render({
-      action: action,
-      href: href
-    });
-  },
-
-  newBookForm: function () {
-    this.menuView("Add note", "/new");
-    this.newBook = new NewBookView();
-  },
-
-  indexView: function () {
-    this.viewsCleanup(app.view, app.menu);
-    this.menuView("Add note", "/new");
     this.books = new Books();
-    this.books.fetch({
-      success: function (models) {
-        app.view = new IndexView({ collection: models });
-      }
-    });
-  },
-
-  showReadingList: function () {
-    this.viewsCleanup([app.view, app.menu]);
-    this.menuView("Add book", "/new_toread");
     this.readingList = new BooksToRead();
-    this.readingList.fetch({
-      success: function (models) {
-        app.view = new ReadIndexView({ collection: models });
-      }
-    });
-  },
-
-  addBookToRead: function () {
-    this.menuView("Add book", "/new_toread");
-    this.newBookToRead = new NewToReadView();
+    this.quotes = new Quotes();
+    this.bindEvents();
   },
 
   viewsCleanup: function (views) {
@@ -75,8 +32,63 @@ var app = {
     if (arguments.length > 1) {
       args = [].slice.call(arguments);
       args.forEach(function (view) {
-        if (view) view.remove();
+        if (view) {
+          view.remove();
+          view.undelegateEvents();
+        }
       });
     }
+  },
+
+  renderMenu: function (action, href) {
+    this.menu.render({
+      action: action,
+      href: href
+    });
+  },
+
+  newNote: function () {
+    this.renderMenu("Add note", "/new");
+    this.newItem = new NewNoteView();
+  },
+
+  newBook: function () {
+    this.renderMenu("Add book", "/new_toread");
+    this.newItem = new NewToReadView();
+  },
+
+  newQuote: function () {
+    this.renderMenu("Add quote", "/new_quote");
+    this.newItem = new NewQuoteView();
+  },
+
+  notesIndex: function () {
+    this.viewsCleanup(app.view, app.menu, app.newItem);
+    this.renderMenu("Add note", "/new");
+    this.books.fetch({
+      success: function (models) {
+        app.view = new IndexView({ collection: models });
+      }
+    });
+  },
+
+  readingIndex: function () {
+    this.viewsCleanup(app.view, app.menu, app.newItem);
+    this.renderMenu("Add book", "/new_toread");
+    this.readingList.fetch({
+      success: function (models) {
+        app.view = new ReadIndexView({ collection: models });
+      }
+    });
+  },
+
+  quotesIndex: function () {
+    this.viewsCleanup(app.view, app.menu, app.newItem);
+    this.renderMenu("Add quote", "/new_quote");
+    this.quotes.fetch({
+      success: function (models) {
+        app.view = new QuotesIndexView({ collection: models });
+      }
+    });
   }
 }

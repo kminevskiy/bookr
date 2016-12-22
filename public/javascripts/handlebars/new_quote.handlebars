@@ -1,0 +1,14 @@
+<h1>New Quote Has Arrived!</h1>
+<form action="/quotes" method="post">
+  <fieldset id="main-form">
+    <label for="quote">Quote</label>
+    <input type="text" name="quote" id="quote" placeholder="An insightful quote" autofocus>
+    <label for="author">Author</label>
+    <input type="text" name="author" id="author" placeholder="By Some Amazing Author">
+    <div id="error-message"></div>
+  </fieldset>
+  <fieldset id="action-form">
+    <input class="new-submit" type="submit" value="Submit">
+    <input class="new-reset" type="button" value="Reset">
+  </fieldset>
+</form>

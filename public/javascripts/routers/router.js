@@ -1,11 +1,13 @@
 var router = new (Backbone.Router.extend({
   routes: {
-    "new": app.newBookForm,
-    "read": app.showReadingList,
-    "new_toread": app.addBookToRead
+    "new": app.newNote,
+    "read": app.readingIndex,
+    "new_toread": app.newBook,
+    "new_quote": app.newQuote,
+    "quotes": app.quotesIndex
   },
 
-  index: function () { app.indexView() },
+  index: function () { app.notesIndex() },
 
   initialize: function () {
     this.route(/^\/?$/, "index", this.index);

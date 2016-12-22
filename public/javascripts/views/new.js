@@ -1,15 +1,15 @@
-var newBookForm = Handlebars.templates.new_book;
+var newNoteForm = Handlebars.templates.new_book;
 
-var NewBookView = Backbone.View.extend({
+var NewNoteView= Backbone.View.extend({
   attributes: {
-    id: "new-book-form"
+    id: "new-form"
   },
 
   initialize: function () {
     this.render();
   },
 
-  template: newBookForm,
+  template: newNoteForm,
 
   render: function () {
     this.$el.html(this.template());

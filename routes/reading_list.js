@@ -24,7 +24,7 @@ module.exports = function (router) {
     dbMaster.checkCoverExists(cover, function (resultingCover) {
       book.cover = resultingCover;
       dbMaster.insertBookToRead(book, function () {
-        res.status(200).end();
+        res.status(201).end();
       });
     });
   });

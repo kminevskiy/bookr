@@ -21,7 +21,8 @@ body {
 
 h1 {
   font-size: $h1_size;
-  margin: 30px 0 50px 0;
+  margin: 10px 0 50px 0;
+  text-align: center;
 }
 
 input[type="submit"],
@@ -55,7 +56,7 @@ New book form styling
 ====================
 */
 
-#new-book-form {
+#new-form {
 
   width: 60%;
   margin: 0 auto;
@@ -124,7 +125,7 @@ New book form styling
 
 /*
 ==================
-Clear fix
+Clearfix
 ==================
 */
 
@@ -153,6 +154,7 @@ main {
       background-color: $body;
       @include element-transition(border-color 300ms ease-in-out);
 
+
       h3, p {
         margin: 0 0 5px 0;
         max-width: 500px;
@@ -167,6 +169,44 @@ main {
         line-height: 150%;
         text-align: justify;
         padding: 0 0 0 195px;
+      }
+
+      .quote-container {
+        display: inline-block;
+
+        .quote-author {
+          margin-top: 5px;
+          text-align: right;
+          font-size: 14px;
+          max-width: 100%;
+        }
+      }
+
+      .quote-actions {
+        text-align: right;
+      }
+
+      .edit-quote, .delete-quote {
+        @include reset-appearance();
+        @include element-transition(border-color 300ms ease-in-out);
+        padding: 0 5px 3px 5px;
+        background-color: $body;
+        border: none;
+        border-bottom: 1px solid $body;
+        font-size: 14px;
+
+        &:hover {
+          border-color: $main_font_color;
+        }
+      }
+
+      .edit-quote {
+        color: $modify_button_color;
+      }
+
+      .delete-quote {
+        color: $negative_button_color;
+        margin-left: 10px;
       }
     }
   }
@@ -188,9 +228,9 @@ Book actions buttons styling
 
 .actions {
 
-  .edit-book,
-  .delete-book,
-  .details-book {
+  .edit,
+  .delete,
+  .details {
     @include reset-appearance();
     @include nav-button($main_font_color);
     outline: none;
@@ -201,21 +241,21 @@ Book actions buttons styling
     font-size: 14px;
   }
 
-  .edit-book {
+  .edit {
     &:hover {
       color: $modify_button_color;
       border-color: $modify_button_color;
     }
   }
 
-  .delete-book {
+  .delete {
     &:hover {
       color: $negative_button_color;
       border-color: $negative_button_color;
     }
   }
 
-  .details-book {
+  .details {
     &:hover {
       color: $positive_button_color;
       border-color: $positive_button_color;
@@ -248,9 +288,6 @@ nav {
   li {
     text-align: center;
     width: 100px;
-    + li {
-      margin-left: -10px;
-    }
   }
 
   a {
@@ -299,7 +336,7 @@ Edit book modal and overlay styling
   background-color: #fff;
   z-index: 2;
   border-radius: 2px;
-  @extend #new-book-form;
+  @extend #new-form;
 
   + #overlay {
     display: block;
@@ -423,7 +460,7 @@ Empty books list stub styling
   left: 50%;
   margin-top: -80px;
   margin-left: -225px;
-  width: 450px;
+  width: 500px;
   height: 160px;
   cursor: default;
   text-align: center;
@@ -458,10 +495,6 @@ Empty books list stub styling
       opacity: 1;
     }
   }
-}
-
-#new-book-toread {
-  @extend #new-book-form;
 }
 
 #read-index {

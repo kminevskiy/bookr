@@ -1,0 +1,17 @@
+<div id="edit-modal">
+  <h1>Edit Quote</h1>
+  <img class="close" src="/images/close.svg" alt="close icon">
+  <form action="/quotes/{{id}}" method="put">
+    <fieldset id="main-form">
+      <input type="hidden" name="id" value="{{id}}">
+      <label for="quote">Quote</label>
+      <input type="text" name="quote" id="quote" value="{{quote}}">
+      <label for="author">Author</label>
+      <input type="text" name="author" id="author" value="{{author}}">
+    </fieldset>
+    <fieldset id="action-form">
+      <input type="submit" value="Update quote" class="update">
+    </fieldset>
+  </form>
+</div>
+<div id="overlay"></div>

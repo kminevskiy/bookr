@@ -2,7 +2,7 @@ var newBookToRead = Handlebars.templates.new_to_read;
 
 var NewToReadView = Backbone.View.extend({
   attributes: {
-    id: "new-book-toread"
+    id: "new-form"
   },
 
   template: newBookToRead,

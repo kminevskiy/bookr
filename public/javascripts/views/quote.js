@@ -1,35 +1,26 @@
-var book = Handlebars.templates.book;
+var quote = Handlebars.templates.quote;
 
-var BookView = Backbone.View.extend({
+var QuoteView = Backbone.View.extend({
   tagName: "li",
 
   className: "cf",
 
-  template: book,
+  template: quote,
 
   events: {
-    "click .delete": "deleteBook",
-    "click .details": function () {
-      this.openDetails();
-    },
-    "click .edit": function () {
-      this.editBook();
+    "click .delete-quote": "deleteQuote",
+    "click .edit-quote": function () {
+      this.editQuote();
     }
   },
 
-  openDetails: function () {
-    new BookDetailsView({
+  editQuote: function () {
+    new QuoteEditModal({
       model: this.model
     });
   },
 
-  editBook: function () {
-    new ModalView({
-      model: this.model
-    });
-  },
-
-  deleteBook: function (e) {
+  deleteQuote: function () {
     this.model.destroy();
   },
 
@@ -44,4 +35,5 @@ var BookView = Backbone.View.extend({
 
     return this;
   }
+
 });

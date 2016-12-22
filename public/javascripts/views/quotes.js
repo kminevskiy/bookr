@@ -1,21 +1,18 @@
-var IndexView = Backbone.View.extend({
+var QuotesIndexView = Backbone.View.extend({
   tagName: "ul",
-
-  attributes: {
-    id: "index"
-  },
 
   render: function () {
     if (this.collection.length) {
       if (this.emptyView) this.emptyView.trigger("destroyEmptyStub");
 
-      this.collection.each(function (book) {
-        var bookView = new BookView({ model: book });
-        this.$el.append(bookView.render().el)
+      this.collection.each(function (quote) {
+        var quoteView = new QuoteView({ model: quote });
+        this.$el.append(quoteView.render().el);
       }, this);
 
       $("#content").html(this.$el);
     } else {
+
       $("#content").html(this.emptyView.render().el);
     }
   },
@@ -28,7 +25,7 @@ var IndexView = Backbone.View.extend({
 
   initialize: function () {
     this.listenTo(this.collection, "remove", this.renderStubIfEmpty);
-    this.emptyView = new EmptyStubView({ items: "notes", href: "/new" });
+    this.emptyView = new EmptyStubView({ items: "quotes", href: "/new_quote" });
     this.render();
   }
 });
