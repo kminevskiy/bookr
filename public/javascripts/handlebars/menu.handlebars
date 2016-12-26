@@ -1,12 +1,17 @@
 <li>
-  <a href="/">Notes</a>
+  <a class="nav-item" href="/">Notes</a>
 </li>
 <li>
-  <a href="/read">To Read</a>
+  <a class="nav-item" href="/read">To Read</a>
 </li>
 <li>
-  <a href="/quotes">Quotes</a>
+  <a class="nav-item" href="/quotes">Quotes</a>
 </li>
-<li class="add-read">
-  <a class="nav-button new-book-button" href="{{href}}">{{action}}</a>
+<li>
+  <a class="nav-item" href="/stats/month">Statistics</a>
 </li>
+{{#if href}}
+  <li class="add-read">
+    <a class="nav-button new-book-button" href="{{href}}">{{action}}</a>
+  </li>
+{{/if}}

@@ -5,7 +5,9 @@
 1. Add notes with key ideas, general book info and summary [done]
 2. Create your ToRead list to keep track of books you'd like to read [done]
 3. Automatically add book cover (if ISBN is supplied, fetches covers via OpenLibrary API) [done]
-4. Input verification refactoring [in progress]
+4. Favorite quotes management [done]
+5. Statistics by month / year [in progress]
+6. More robust input verification [in progress]
 
 #### Need help with:
 1. App design

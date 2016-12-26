@@ -13,15 +13,16 @@ html
     header
       nav
     main
+      div#sidebar
       div#modal
       div#content
       div#overlay
     footer
     block content
   +javascripts("application")
-  +javascripts("models/book", "models/book_to_read", "models/quote")
+  +javascripts("models/book", "models/book_to_read", "models/quote", "models/stats")
   +javascripts("collections/books", "collections/books_to_read", "collections/quotes")
-  +javascripts("views/new", "views/index", "views/book", "views/menu", "views/edit_modal", "views/error_modal", "views/details_modal", "views/empty_stub", "views/read_index", "views/new_toread", "views/book_to_read", "views/quotes_index", "views/new_quote", "views/quote_edit_modal", "views/quote")
+  +javascripts("views/new", "views/index", "views/book", "views/menu", "views/edit_modal", "views/error_modal", "views/details_modal", "views/empty_stub", "views/read_index", "views/new_toread", "views/book_to_read", "views/quotes_index", "views/new_quote", "views/quote_edit_modal", "views/quote", "views/stats_index", "views/stats_detailed")
   script(type="text/javascript").
     app.init()
   +javascripts("routers/router")

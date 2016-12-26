@@ -28,6 +28,13 @@ var dbMaster = {
     });
   },
 
+  getCurrentDate: function () {
+    var date = (new Date()).toLocaleDateString();
+    var thisMonth = date.slice(0, 2);
+    var thisYear = date.slice(6);
+    return (thisMonth + "-" + thisYear);
+  },
+
   getQuotes: function (quotes, callback) {
     db.each("SELECT * FROM quotes", function (err, row) {
       quotes.push(row);
@@ -146,6 +153,85 @@ var dbMaster = {
     });
 
     callback();
+  },
+
+  getStats: function (callback) {
+    var statsObj = {};
+    var self = this;
+    db.serialize(function () {
+
+      // get total number of books
+      db.get("SELECT COUNT(*) AS total FROM books", function (err, row) {
+        statsObj.totalBooks = row.total;
+      });
+
+      // create an object with year_month(2012-12) as keys and number of books as values
+      db.all('SELECT COUNT(*) AS total, strftime("%m-%Y", date) as month_year FROM books GROUP BY month_year', function (err, rows) {
+        var tempMonthYear = {};
+        var yearMonth;
+
+        rows.forEach(function (row) {
+          yearMonth = row.month_year;
+          if (tempMonthYear[yearMonth]) tempMonthYear[yearMonth] += row.total;
+          else tempMonthYear[yearMonth] = row.total;
+        });
+
+        statsObj.monthsAndBooks = tempMonthYear;
+      });
+
+      var thisYear = self.getCurrentDate().slice(3);
+      var tempYears = {};
+      var prevYear, year, years;
+
+      // create an object with years as keys and number of books as values
+      db.all('SELECT COUNT(*) AS total, strftime("%Y", date) AS year FROM books GROUP BY year ORDER BY year ASC', function (err, rows) {
+        rows.forEach(function (row) {
+          year = row.year;
+          if (tempYears[year]) tempYears[year] += row.total;
+          else tempYears[year] = row.total;
+        });
+
+        statsObj.yearsAndBooks = tempYears;
+
+        years = Object.keys(statsObj.yearsAndBooks);
+        prevYear = years[years.length - 2] ? statsObj.yearsAndBooks[years[years.length - 2]] : 0;
+
+        statsObj.booksPrevYear = prevYear;
+        statsObj.booksThisYear = statsObj.yearsAndBooks[years[years.length - 1]];
+      });
+
+      // get number of books read this month
+      var thisDate = self.getCurrentDate();
+
+      db.get('SELECT COUNT(*) AS total, strftime("%m-%Y", date) as month_year FROM books WHERE month_year LIKE $date', {
+        $date: "%" + thisDate + "%"
+      }, function (err, row) {
+        statsObj.booksThisMonth = row.total;
+      });
+
+      // get average number of books
+      db.get("SELECT (COUNT(*) / 12.0) AS average FROM books", function (err, row) {
+        statsObj.avgCount = +row.average.toFixed(2);
+      });
+
+      // get books count for previous month
+      var prevMonthData, booksPrevMonth;
+
+      db.all('SELECT COUNT(*) AS total, strftime("%m-%Y", date) AS month_year FROM books GROUP BY month_year ORDER BY month_year ASC', function (err, rows) {
+        rows.forEach(function (row, rowIndex) {
+          // if iteration month is current month AND previous year exists => set property for previous month
+          if (row.month_year === thisDate && rows[rowIndex - 1]) {
+            prevMonthData = rows[rowIndex - 1];
+          }
+        });
+        if (prevMonthData) {
+          booksPrevMonth = prevMonthData.month_year;
+          statsObj.booksPrevMonth = prevMonthData.total;
+        } else statsObj.booksPrevMonth = 0;
+
+        callback(statsObj);
+      });
+    });
   }
 }
 

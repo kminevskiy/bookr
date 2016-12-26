@@ -4,7 +4,12 @@ var router = new (Backbone.Router.extend({
     "read": app.readingIndex,
     "new_toread": app.newBook,
     "new_quote": app.newQuote,
-    "quotes": app.quotesIndex
+    "quotes": app.quotesIndex,
+    "stats/:timeframe": "statsIndex"
+  },
+
+  statsIndex: function (page) {
+    app.statsIndex(page);
   },
 
   index: function () { app.notesIndex() },

@@ -1,0 +1,7 @@
+<h1>{{currentMonthString}} Reading Statistics</h1>
+<ul>
+  <li><span>Books read: </span>{{booksReadMonthly booksThisMonth}} so far.</li>
+  <li><span>Books this month vs books previous month: </span>{{compareMonths booksThisMonth booksPrevMonth}}</li>
+  <li><span>Books this month vs average books per year: </span>{{readingMonthlyPerformance booksThisMonth avgCount}}</li>
+  <li><span>{{cheerUp booksThisMonth booksPrevMonth}}</span></li>
+</ul>

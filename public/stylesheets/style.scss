@@ -46,6 +46,15 @@ img {
   width: 100%;
 }
 
+a {
+  text-decoration: none;
+}
+
+.active-nav-button {
+  color: #fff;
+  border-color: #fff;
+}
+
 .no-scroll {
   overflow: hidden;
 }
@@ -57,7 +66,6 @@ New book form styling
 */
 
 #new-form {
-
   width: 60%;
   margin: 0 auto;
   text-align: center;
@@ -142,10 +150,10 @@ Book list item styling
 */
 
 main {
-  width: 80%;
-  margin: 0 auto;
-
   #content {
+    margin: 0 40px 40px 100px;
+    width: 80%;
+
     li {
       position: relative;
       margin: 10px;
@@ -281,7 +289,6 @@ nav {
 
   li, a {
     display: inline-block;
-    text-decoration: none;
     color: #757575;
   }
 
@@ -290,9 +297,7 @@ nav {
     width: 100px;
   }
 
-  a {
-    width: 100%;
-    padding: 20px 0;
+  .nav-button {
     border-bottom: 3px solid #000;
     @include nav-button($main_font_color);
 
@@ -300,6 +305,13 @@ nav {
       color: #fff;
       border-color: #fff;
     }
+
+  }
+
+  a {
+    width: 100%;
+    padding: 20px 0;
+    @extend .nav-button;
   }
 
   .add-read {
@@ -480,7 +492,6 @@ Empty books list stub styling
   }
 
   a {
-    text-decoration: none;
     color: $main_font_color;
     display: inline-block;
     font-size: 54px;
@@ -498,7 +509,6 @@ Empty books list stub styling
 }
 
 #read-index {
-
   margin: 100px 0 0 0;
 
   li {
@@ -539,3 +549,39 @@ Empty books list stub styling
   }
 }
 
+/*
+====================
+Stats sidebar styling
+====================
+*/
+
+#sidebar {
+  float: left;
+  position: absolute;
+  top: 62px;
+  bottom: 0;
+  left: 0;
+  background: #000;
+
+  ul {
+    margin: 60px 25px 0 15px;
+  }
+
+  li:not(:last-of-type){
+    margin-bottom: 40px;
+  }
+
+  a {
+    color: #fff;
+  }
+}
+
+/*
+====================
+Stats main frame styling
+====================
+*/
+
+.stats {
+  margin-left: 50px;
+}
