@@ -25,7 +25,7 @@ module.exports = function (router) {
     });
   });
 
-  router.put("/quotes/:id", function (req, res) {
+  router.post("/quotes/:id", function (req, res) {
     var quote = req.body;
     dbMaster.updateQuote(quote, function () {
       res.json(quote);
@@ -39,5 +39,4 @@ module.exports = function (router) {
     });
   });
 };
-
 

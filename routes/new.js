@@ -26,7 +26,7 @@ module.exports = function (router) {
     });
   });
 
-  router.put("/books/:id", function (req, res) {
+  router.post("/books/:id", function (req, res) {
     var book = req.body;
     var cover = "http://covers.openlibrary.org/b/isbn/" + book.isbn + "-M.jpg?default=false";
 

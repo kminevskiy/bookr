@@ -181,12 +181,12 @@ main {
 
       .quote-container {
         display: inline-block;
+        width: 100%;
 
         .quote-author {
-          margin-top: 5px;
-          text-align: right;
+          margin-top: 20px;
           font-size: 14px;
-          max-width: 100%;
+          float: right;
         }
       }
 
@@ -585,3 +585,25 @@ Stats main frame styling
 .stats {
   margin-left: 50px;
 }
+
+/*
+====================
+Index sort select styling
+====================
+*/
+
+#sort-order {
+  display: block;
+  text-align: right;
+  margin-right: 25px;
+
+  select {
+    @include reset-appearance();
+    border: 1px solid $main_font_color;
+    border-radius: 0;
+    font-size: 14px;
+    padding: 4px 16px;
+    outline: none;
+  }
+}
+

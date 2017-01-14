@@ -11,6 +11,7 @@ var IndexView = Backbone.View.extend({
 
       this.collection.each(function (book) {
         var bookView = new BookView({ model: book });
+        book.view = bookView;
         this.$el.append(bookView.render().el)
       }, this);
 
@@ -18,6 +19,7 @@ var IndexView = Backbone.View.extend({
     } else {
       $("#content").html(this.emptyView.render().el);
     }
+    $("#content").prepend(this.sortElement.render().el);
   },
 
   renderStubIfEmpty: function () {
@@ -26,9 +28,38 @@ var IndexView = Backbone.View.extend({
     }
   },
 
+  sortNotes: function (year) {
+    var noteDate;
+    this.collection.each(function (note) {
+      note.view.$el.detach();
+    });
+    if (year !== "all") {
+      this.collection.each(function (n) {
+        noteDate = (n.get("date")).slice(0, 4);
+        if (noteDate === year) {
+          this.$el.append(n.view.el);
+        }
+      }, this);
+    } else {
+      this.collection.each(function (n) {
+        this.$el.append(n.view.el);
+      }, this);
+    }
+    $("#content").append(this.el);
+  },
+
+  getUniqueYears: function () {
+    var years = this.collection.pluck("date").map(function (date) {
+      return date.slice(0, 4);
+    });
+    return _.uniq(years);
+  },
+
   initialize: function () {
     this.listenTo(this.collection, "remove", this.renderStubIfEmpty);
+    this.listenTo(this, "newSort", this.sortNotes);
     this.emptyView = new EmptyStubView({ items: "notes", href: "/new" });
+    this.sortElement = new IndexSortView({ years: this.getUniqueYears() });
     this.render();
   }
 });

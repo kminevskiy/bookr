@@ -4,7 +4,6 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var fs = require("fs");
 var sassMiddleware = require("node-sass-middleware");
 var dbMaster = require("./local_modules/db_master");
 

@@ -64,7 +64,6 @@ var app = {
   },
 
   notesIndex: function () {
-    this.viewsCleanup(app.view, app.menu, app.newItem);
     this.renderMenu("Add note", "/new");
     this.books.fetch({
       success: function (models) {
@@ -94,7 +93,6 @@ var app = {
   },
 
   statsIndex: function (page) {
-    this.viewsCleanup(app.view, app.menu, app.newItem);
     this.renderMenu();
     this.getStats(function (stats) {
       app.view = new StatsView({ model: stats, page: page });
@@ -113,26 +111,26 @@ var app = {
 Handlebars.registerHelper("booksReadMonthly", function (booksNum) {
   if (booksNum === 0) return "You haven't read anything this month";
   else if (booksNum > 1) return `You\`ve read ${booksNum} books this month`;
-  else return "You've read 1 book this month"
+  else return "You've read 1 book this month";
 });
 
 Handlebars.registerHelper("readingMonthlyPerformance", function (thisMonth, avgMonth) {
-  if (thisMonth === 0 && avgMonth === 0) return "There is no reading history yet."
+  if (thisMonth === 0 && avgMonth === 0) return "There is no reading history yet.";
   if (thisMonth === avgMonth) return "So far you've read about the same compared to your average reading performance.";
   if (thisMonth > avgMonth) {
-    return "You've read more than your monthly average."
+    return "You've read more than your monthly average.";
   } else {
-    return "You've read less than your monthly average."
+    return "You've read less than your monthly average.";
   }
 });
 
 Handlebars.registerHelper("compareMonths", function (thisMonth, prevMonth) {
-  if (thisMonth === 0 && prevMonth === 0) return "There is no reading history yet."
+  if (thisMonth === 0 && prevMonth === 0) return "There is no reading history yet.";
   if (thisMonth === prevMonth) return "So far you've read about the same compared to your previous month's performance.";
   if (thisMonth > prevMonth) {
-    return "You've read more than a month before."
+    return "You've read more than a month before.";
   } else {
-    return "You've read less than a month before."
+    return "You've read less than a month before.";
   }
 });
 
@@ -154,18 +152,18 @@ Handlebars.registerHelper("currentYearString", function () {
 });
 
 Handlebars.registerHelper("booksReadAnnually", function (booksNum) {
-  if (booksNum === 0) return "You haven't read anything this year";
-  else if (booksNum > 1) return `You\`ve read ${booksNum} books this year`;
-  else return "You've read 1 book this year so far"
+  if (booksNum === 0) return "You haven't read anything this year so far";
+  else if (booksNum > 1) return `You\`ve read ${booksNum} books this year so far`;
+  else return "You've read 1 book this year so far";
 });
 
 Handlebars.registerHelper("compareYears", function (thisYear, prevYear) {
-  if (!thisYear && !prevYear) return "There is no reading history yet."
+  if (!thisYear && !prevYear) return "There is no reading history yet.";
   else if (thisYear === prevYear) return "Your reading performance is about the same as a year before.";
   else if (thisYear > prevYear) {
-    return "You read more this year than a year before."
+    return "You read more this year than a year before.";
   } else {
-    return "You read less this year than a year before."
+    return "You read less this year than a year before.";
   }
 });
 

@@ -1,7 +1,7 @@
 <div id="edit-modal">
   <h1>Edit Book</h1>
   <img class="close" src="/images/close.svg" alt="close icon">
-  <form action="/books/{{id}}" method="put">
+  <form action="/books/{{id}}" method="post">
     <fieldset id="main-form">
       <input type="hidden" name="id" value="{{id}}">
       <label for="title">Title</label>

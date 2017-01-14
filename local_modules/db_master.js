@@ -30,13 +30,14 @@ var dbMaster = {
 
   getCurrentDate: function () {
     var date = (new Date()).toLocaleDateString();
-    var thisMonth = date.slice(0, 2);
-    var thisYear = date.slice(6);
-    return (thisMonth + "-" + thisYear);
+    var thisMonth = date.slice(0, 1);
+    thisMonth = thisMonth.length > 1 ? thisMonth : "0" + thisMonth;
+    var thisYear = date.slice(4);
+    return `${thisMonth}-${thisYear}`;
   },
 
   getQuotes: function (quotes, callback) {
-    db.each("SELECT * FROM quotes", function (err, row) {
+    db.each("SELECT * FROM quotes ORDER BY date DESC", function (err, row) {
       quotes.push(row);
     }, callback);
   },
@@ -117,7 +118,7 @@ var dbMaster = {
   },
 
   getAllBooks: function (books, callback) {
-    db.each("SELECT books.id, books.date, title, author, isbn, cover, rating, summary, idea1, idea2, idea3 FROM books JOIN ideas ON books.id = ideas.book_id", function (err, row) {
+    db.each("SELECT books.id, books.date, title, author, isbn, cover, rating, summary, idea1, idea2, idea3 FROM books JOIN ideas ON books.id = ideas.book_id ORDER BY books.date DESC", function (err, row) {
       books.push(row);
     }, callback);
   },
@@ -156,8 +157,11 @@ var dbMaster = {
   },
 
   getStats: function (callback) {
-    var statsObj = {};
-    var self = this;
+    var thisDate = this.getCurrentDate();
+    var thisYear = thisDate.slice(3);
+    var statsObj = {}, tempMonthYear = {}, tempYears = {};
+    var yearMonth, prevYear, year, years;
+
     db.serialize(function () {
 
       // get total number of books
@@ -167,9 +171,6 @@ var dbMaster = {
 
       // create an object with year_month(2012-12) as keys and number of books as values
       db.all('SELECT COUNT(*) AS total, strftime("%m-%Y", date) as month_year FROM books GROUP BY month_year', function (err, rows) {
-        var tempMonthYear = {};
-        var yearMonth;
-
         rows.forEach(function (row) {
           yearMonth = row.month_year;
           if (tempMonthYear[yearMonth]) tempMonthYear[yearMonth] += row.total;
@@ -178,10 +179,6 @@ var dbMaster = {
 
         statsObj.monthsAndBooks = tempMonthYear;
       });
-
-      var thisYear = self.getCurrentDate().slice(3);
-      var tempYears = {};
-      var prevYear, year, years;
 
       // create an object with years as keys and number of books as values
       db.all('SELECT COUNT(*) AS total, strftime("%Y", date) AS year FROM books GROUP BY year ORDER BY year ASC', function (err, rows) {
@@ -201,8 +198,6 @@ var dbMaster = {
       });
 
       // get number of books read this month
-      var thisDate = self.getCurrentDate();
-
       db.get('SELECT COUNT(*) AS total, strftime("%m-%Y", date) as month_year FROM books WHERE month_year LIKE $date', {
         $date: "%" + thisDate + "%"
       }, function (err, row) {
@@ -217,9 +212,10 @@ var dbMaster = {
       // get books count for previous month
       var prevMonthData, booksPrevMonth;
 
-      db.all('SELECT COUNT(*) AS total, strftime("%m-%Y", date) AS month_year FROM books GROUP BY month_year ORDER BY month_year ASC', function (err, rows) {
+      db.all('SELECT COUNT(*) AS total, strftime("%m-%Y", date) AS month_year FROM books GROUP BY month_year ORDER BY month_year DESC', function (err, rows) {
         rows.forEach(function (row, rowIndex) {
-          // if iteration month is current month AND previous year exists => set property for previous month
+          // if iteration month is current month AND previous month exists => set property for previous month
+            console.log(row.month_year, thisDate, rows[rowIndex - 1]);
           if (row.month_year === thisDate && rows[rowIndex - 1]) {
             prevMonthData = rows[rowIndex - 1];
           }
