@@ -2,6 +2,7 @@ var QuotesIndexView = Backbone.View.extend({
   tagName: "ul",
 
   render: function () {
+    $("#sidebar").empty()
     if (this.collection.length) {
       if (this.emptyView) this.emptyView.trigger("destroyEmptyStub");
 

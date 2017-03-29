@@ -64,6 +64,7 @@ var app = {
   },
 
   notesIndex: function () {
+    this.viewsCleanup(app.view, app.menu, app.newItem);
     this.renderMenu("Add note", "/new");
     this.books.fetch({
       success: function (models) {
@@ -93,6 +94,7 @@ var app = {
   },
 
   statsIndex: function (page) {
+    this.viewsCleanup(app.view, app.menu, app.newItem);
     this.renderMenu();
     this.getStats(function (stats) {
       app.view = new StatsView({ model: stats, page: page });

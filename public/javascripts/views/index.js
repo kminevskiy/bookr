@@ -6,6 +6,7 @@ var IndexView = Backbone.View.extend({
   },
 
   render: function () {
+    $("#sidebar").empty()
     if (this.collection.length) {
       if (this.emptyView) this.emptyView.trigger("destroyEmptyStub");
 

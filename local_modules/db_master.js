@@ -215,7 +215,6 @@ var dbMaster = {
       db.all('SELECT COUNT(*) AS total, strftime("%m-%Y", date) AS month_year FROM books GROUP BY month_year ORDER BY month_year DESC', function (err, rows) {
         rows.forEach(function (row, rowIndex) {
           // if iteration month is current month AND previous month exists => set property for previous month
-            console.log(row.month_year, thisDate, rows[rowIndex - 1]);
           if (row.month_year === thisDate && rows[rowIndex - 1]) {
             prevMonthData = rows[rowIndex - 1];
           }
